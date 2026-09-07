@@ -9,8 +9,8 @@ This document explains how to properly set up Git for this project.
 - **2.55.0.windows.5**
 
 ### User Identity
-- **Name:** Fernando Luis Ortiz-Babilonia
-- **Email:** : haloisgone@yahoo.com
+- **Name:** insert name
+- **Email:** : insert email
 
 ---
 
