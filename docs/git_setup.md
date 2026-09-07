@@ -27,8 +27,8 @@ Open **Git Bash** and run:
 Open **Git Bash** run:
 
 ```bash
-git config --global user.name "Fernando Luis Ortiz-Babilonia
-git config --global user.email "haloisgone@yahoo.com"
+git config --global user.name "insert name
+git config --global user.email "insert email"
 ```
 
 ### 4: Verify Your Identity
