@@ -41,4 +41,28 @@ relative to this folder.
 ## 4. Open the Integrated Terminal
 
 ```
-Terminal 
+Terminal → New Terminal
+```
+
+The terminal opens at your project root. You should see your OS
+prompt.
+
+---
+
+## 5. Create a Virtual Environment
+
+Run **one** of these commands (pick whichever you prefer):
+
+### Option A - `venv` (built into Python, recommend)
+
+```powershell
+python -m venv .venv
+```
+
+**Only run this once per project** If `.venv` already
+exists, skip to step 6.
+
+---
+
+## 6. Activate the Virtual Environment
+
