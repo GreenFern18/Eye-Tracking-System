@@ -21,4 +21,24 @@ VS Code installed
 
 ## 2. Install the Python Extension in VS Code
 
-1. Open VS Code 
+1. Open VS Code → click the **Extensions** icon in the left sidebar
+2. Search for **Python** by **Microsoft**
+3. Click **Install**.
+
+---
+
+## 3. Open Your Project Folder
+
+```
+File → Open Folder → select your project directory
+```
+
+This gives VS Code a **workspace root**. Everything below runs
+relative to this folder.
+
+---
+
+## 4. Open the Integrated Terminal
+
+```
+Terminal 
