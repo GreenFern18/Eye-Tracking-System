@@ -66,3 +66,15 @@ exists, skip to step 6.
 
 ## 6. Activate the Virtual Environment
 
+**Why** Activation adds the venv's `Scripts` folder to your
+PATH so `python` and `pip` point *inside the venv* instead of
+the system-wide install
+
+### Windows PowerShell (default VS Code terminal)
+
+```powershell
+.venv\Scripts\Activate.ps1
+```
+
+If you see *running scripts is disabled on this system*,
+run once in an **admin** PowerShell:
