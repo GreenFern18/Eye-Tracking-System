@@ -78,3 +78,46 @@ the system-wide install
 
 If you see *running scripts is disabled on this system*,
 run once in an **admin** PowerShell:
+```powershell
+Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
+```
+
+...then close and reopen VS Code.
+
+### Confirm it's active
+
+Your prompt should now be prefixed with the venv name:
+
+```
+(.venv) PS C:\path\to\projects>
+```
+
+Also verify:
+
+```powershell
+python --version
+# → Python 3.13.x (from the venv, not the system)
+
+where python
+# → C:\path\to\project\.venv\Scripts\python.exe    ← venv path first
+```
+
+---
+
+## 7. Install Packages into the Venv
+
+```powershell
+# Upgrade pip itself first (good habit)
+python -m pip install --upgrade pip
+
+# Then install whatever you need
+python -m pip install requests flask
+```
+
+**Always use `python -m pip ...`** (or just `pip ...` while
+the venv is active) instead of bare `pip`, to guarentee you're
+hitting the venv.
+
+---
+
+##
