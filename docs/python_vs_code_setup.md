@@ -135,4 +135,10 @@ VS Code needs to know **which** Python to run.
 venv's Python version. e.g. `3.13.x (`.venv`: venv)`.
 
 **Tip:** If the venv doesn't appear in the list, click
-**"Enter interpreter path.."** and browse to 
+**"Enter interpreter path.."** and browse to `.venv/Scripts/
+python.exe`.
+
+## Quick-Reference Cheat Sheet
+| Task | Command |
+|------|---------|
+| Create venv | `python -m venv .venv` |
