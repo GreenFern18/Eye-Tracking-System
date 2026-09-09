@@ -120,4 +120,19 @@ hitting the venv.
 
 ---
 
-##
+## 8. Select the Interpreter in VS Code
+
+VS Code needs to know **which** Python to run.
+
+1. Press `Ctrl + Shift + P` to open the Command Palette.
+2. Type **Python: Select Interpreter"**.
+3. You'll see a list. Pick the one that points to:
+    ```
+    .\.venv\Scripts\python.exe
+    ```
+    (the *relative* path under your project).
+4. The status bar (bottom-left of VS Code) now shows the
+venv's Python version. e.g. `3.13.x (`.venv`: venv)`.
+
+**Tip:** If the venv doesn't appear in the list, click
+**"Enter interpreter path.."** and browse to 
