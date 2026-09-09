@@ -144,3 +144,8 @@ python.exe`.
 | Create venv | `python -m venv .venv` |
 | Activate (PowerShell) | `.venv\Scripts\Activate.ps1`|
 | Install package | `python -m pip install <pkg>` | 
+| List installed | `python -m pip list` |
+| Check Python path | `where python` |
+| Check version | `python --version` |
+| Run script | `python main.py` |
+| VS Code: pick interpreter | `Ctrl+Shift+P` → "Python: Select Interpreter" | 
