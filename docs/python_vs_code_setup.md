@@ -142,3 +142,5 @@ python.exe`.
 | Task | Command |
 |------|---------|
 | Create venv | `python -m venv .venv` |
+| Activate (PowerShell) | `.venv\Scripts\Activate.ps1`|
+| Install package | `python -m pip install <pkg>` | 
