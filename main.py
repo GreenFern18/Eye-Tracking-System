@@ -11,18 +11,25 @@ Quit:
     Press "q" in the window (or Ctrl+C in the terminal).
 """
 
-import cv2                # OpenCV - camera access and window display.
-import mediapipe as mp    # MediaPipe - face and iris landmark detection.
+import os                     # To build the model file path reliably.
+import time                   # To give MediaPipe a timestamp per frame.
+import cv2                    # OpenCV - camera access and window display.
+import mediapipe as mp        # MediaPipe - face and iris landmark detection.
+from mediapipe.tasks import python as mp_tasks        # MediaPipe task options.
+from mediapipe.tasks.python import vision             # MediaPipe face landmarker.
 
 # setup ------------------------------------------------------------------
 
-# MediaPipe's face mesh solution. We create it once and reuse it every frame.
-mp_face_mesh = mp.solutions.face_mesh
-face_mesh = mp_face_mesh.FaceMesh(
-    max_num_faces=1,                    # Detect at most 1 face per frame.
-    refine_landmarks=True,              # Required to get iris landmarks.
-    min_detection_confidence=0.5,       # Minimum confidence to accept a face.
-    min_tracking_confidence=0.5,        # Minimum confidence to keep tracking.
+# Path to the MediaPipe face model file (download - see README or chat).
+# We build it from this file's folder so it works no matter where you run from.
+MODEL_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "face_landmarker.task")
+
+# Create the face landmarker once and reuse it for every frame.
+landmarker = vision.FaceLandmarker.create_from_options(
+    vision.FaceLandmarkerOptions(
+        base_options=mp_tasks.BaseOptions(model_asset_path=MODEL_PATH),
+        num_faces=1,                          # Detect at most 1 face per frame.
+    )
 )
 
 # Open the default webcam (0).
@@ -32,9 +39,9 @@ camera = cv2.VideoCapture(0)
 camera.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
 camera.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
 
-# MediaPipe landmark indices for the two iris centers.
-LEFT_IRIS = 468                  # Iris center, one eye.
-RIGHT_IRIS = 473                 # Iris center, other eye.
+# MediaPipe landmark indices for the two iris centers (478-point face model).
+LEFT_IRIS = 474                  # Iris center, one eye.
+RIGHT_IRIS = 468                 # Iris center, other eye.
 
 # Print the numbers only every N frames so the console stays readable.
 PRINT_EVERY = 10
@@ -58,21 +65,26 @@ while True:
     # MediaPipe expects RGB, but OpenCV gives BGR - convert first.
     rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
-    # Run face mesh detection on this frame.
-    results = face_mesh.process(rgb)
+    # Wrap the image for MediaPipe, with a timestamp (ms) that always grows.
+    mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=rgb)
+    timestamp_ms = int(time.time() * 1000)
 
-    if results.multi_face_landmarks:
+    # Run face detection on this frame.
+    results = landmarker.detect_for_video(mp_image, timestamp_ms)
+
+    if results.face_landmarks:
         # There is a face - work with the first (and only) one.
-        landmarks = results.multi_face_landmarks[0].landmark
+        landmarks = results.face_landmarks[0]
         h, w = frame.shape[:2]          # Frame height/width in pixels.
 
         # Find both iris centers and mark them on the image.
-        iris_points = []                      # (normalized_x, normalized_y, px_x, px_y)
+        iris_points = []                      # (mirrored_x, y, px_x, px_y)
         for idx in (LEFT_IRIS, RIGHT_IRIS):
-            lm = landmarks[idx]                # This iris's landmark.
-            x = int(lm.x * w)                  # Iris X in pixels.
-            y = int(lm.y * h)                  # Iris Y in pixels.
-            iris_points.append((lm.x, lm.y, x, y))
+            lm = landmarks[idx]               # This iris's landmark.
+            mx = 1.0 - lm.x                   # Flip X so it matches the mirror view.
+            x = int(mx * w)                   # Iris X in pixels.
+            y = int(lm.y * h)                 # Iris Y in pixels.
+            iris_points.append((mx, lm.y, x, y))
             cv2.circle(frame, (x, y), 4, (0, 255, 0), -1)  # Draw a small green dot on iris.
 
         # Show live coordinates every few frames (normalized + pixels).
@@ -96,6 +108,6 @@ while True:
 
 # Free the camera, the MediaPipe model, and close all windows.
 camera.release()
-face_mesh.close()
+landmarker.close()
 cv2.destroyAllWindows()
 print("Done.")
