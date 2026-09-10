@@ -1,7 +1,7 @@
 """
 main.py - Eye_Tracking_2.0 entry point.
 
-Milestone 1: look at the webcame, find both irises, and
+Milestone 1: look at the webcam, find both irises, and
 print their normalized coordinates (0.0 - 1.0) to the console.
 Mouse movement with the eyes comes in Milestone 2.
 
@@ -11,10 +11,8 @@ Quit:
     Press "q" in the window (or Ctrl+C in the terminal).
 """
 
-from ast import While
-
-import cv2                # OpenCV — camera access and window display.
-import mediapipe as mp    # MediaPipe — face and iris landmark detection.
+import cv2                # OpenCV - camera access and window display.
+import mediapipe as mp    # MediaPipe - face and iris landmark detection.
 
 # setup ------------------------------------------------------------------
 
@@ -34,7 +32,7 @@ camera = cv2.VideoCapture(0)
 camera.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
 camera.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
 
-# mediaPipe landmark indices for the two iris centers.
+# MediaPipe landmark indices for the two iris centers.
 LEFT_IRIS = 468                  # Iris center, one eye.
 RIGHT_IRIS = 473                 # Iris center, other eye.
 
@@ -43,28 +41,28 @@ PRINT_EVERY = 10
 
 # main loop ---------------------------------------------------------------
 
-print("Eye tracking active — press 'q' to quit.")
+print("Eye tracking active - press 'q' to quit.")
 frame_count = 0                  # Counts frames so we can throttle printing.
 
-While True:
+while True:
     # Read one frame from the camera.
     ok, frame = camera.read()
     if not ok:
-        # No frame arrived (camera unplugged or failed) — stop gracefully.
+        # No frame arrived (camera unplugged or failed) - stop gracefully.
         print("Camera error: no frame received. Exiting.")
         break
 
     # Mirror the image so it behaves like a mirror (feels natural).
     frame = cv2.flip(frame, 1)
 
-    # MediaPipe expects RGB, but OpenCV gives BGR — convert first.
+    # MediaPipe expects RGB, but OpenCV gives BGR - convert first.
     rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
     # Run face mesh detection on this frame.
     results = face_mesh.process(rgb)
 
-if results.multi_face_landmarks:
-        # There is a face — work with the first (and only) one.
+    if results.multi_face_landmarks:
+        # There is a face - work with the first (and only) one.
         landmarks = results.multi_face_landmarks[0].landmark
         h, w = frame.shape[:2]          # Frame height/width in pixels.
 
