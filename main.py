@@ -63,7 +63,7 @@ While True:
     # Run face mesh detection on this frame.
     results = face_mesh.process(rgb)
 
-    if results.multi_face_landmarks:
+if results.multi_face_landmarks:
         # There is a face — work with the first (and only) one.
         landmarks = results.multi_face_landmarks[0].landmark
         h, w = frame.shape[:2]          # Frame height/width in pixels.
@@ -79,3 +79,25 @@ While True:
 
         # Show live coordinates every few frames (normalized + pixels).
         frame_count += 1
+        if frame_count % PRINT_EVERY == 0:
+            for i, (nx, ny, px, py) in enumerate(iris_points):
+                print(f"eye{i + 1}: x={nx:.3f} y={ny:.3f}  (px {px}, {py})")
+    else:
+        # No face in this frame - nothing to track right now.
+        print("no face detected")
+
+    # Display the frame with the iris dots on it.
+    cv2.imshow("Eye Tracking 2.0", frame)
+
+    # Wait ~1 ms and check for the quit key ("q").
+    key = cv2.waitKey(1) & 0xFF
+    if key == ord("q"):
+        break                            # User pressed 'q' - end the loop.
+
+# cleanup -----------------------------------------------------------------
+
+# Free the camera, the MediaPipe model, and close all windows.
+camera.release()
+face_mesh.close()
+cv2.destroyAllWindows()
+print("Done.")
