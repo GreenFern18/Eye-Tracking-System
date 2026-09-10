@@ -13,3 +13,12 @@
 - OS: Windows 11
 - Key libraries:
 - Tools: VS Code, Git
+
+## Constraints & Prefrences
+- Every code has simple and clear comments to explain what that line does
+- Keep the coding as simple as possible
+- Needs to be as performant as possible, needs to be responsiveness and fast as possible
+- Avoid extreme complexity that would slow things and make it hard for any device to run the program
+
+## Current Status
+- Currently haven't started the project in the planning phase
