@@ -11,14 +11,16 @@ Quit:
     Press "q" in the window (or Ctrl+C in the terminal).
 """
 
-import os                     # To build the model file path reliably.
-import time                   # To give MediaPipe a timestamp per frame.
-import cv2                    # OpenCV - camera access and window display.
-import mediapipe as mp        # MediaPipe - face and iris landmark detection.
+import os                                             # To build the model file path reliably.
+import time                                           # To give MediaPipe a timestamp per frame.
+import cv2                                            # OpenCV - camera access and window display.
+import mediapipe as mp                                # MediaPipe - face and iris landmark detection.
 from mediapipe.tasks import python as mp_tasks        # MediaPipe task options.
 from mediapipe.tasks.python import vision             # MediaPipe face landmarker.
 
-# setup ------------------------------------------------------------------
+# ========
+#  Setup
+# ========
 
 # Path to the MediaPipe face model file (download - see README or chat).
 # We build it from this file's folder so it works no matter where you run from.
@@ -78,14 +80,14 @@ while True:
         h, w = frame.shape[:2]          # Frame height/width in pixels.
 
         # Find both iris centers and mark them on the image.
-        iris_points = []                      # (mirrored_x, y, px_x, px_y)
+        iris_points = []                                      # (mirrored_x, y, px_x, px_y)
         for idx in (LEFT_IRIS, RIGHT_IRIS):
-            lm = landmarks[idx]               # This iris's landmark.
-            mx = 1.0 - lm.x                   # Flip X so it matches the mirror view.
-            x = int(mx * w)                   # Iris X in pixels.
-            y = int(lm.y * h)                 # Iris Y in pixels.
+            lm = landmarks[idx]                               # This iris's landmark.
+            mx = 1.0 - lm.x                                   # Flip X so it matches the mirror view.
+            x = int(mx * w)                                   # Iris X in pixels.
+            y = int(lm.y * h)                                 # Iris Y in pixels.
             iris_points.append((mx, lm.y, x, y))
-            cv2.circle(frame, (x, y), 4, (0, 255, 0), -1)  # Draw a small green dot on iris.
+            cv2.circle(frame, (x, y), 4, (0, 255, 0), -1)     # Draw a small green dot on iris.
 
         # Show live coordinates every few frames (normalized + pixels).
         frame_count += 1
