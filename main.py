@@ -30,6 +30,7 @@ MODEL_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "face_land
 landmarker = vision.FaceLandmarker.create_from_options(
     vision.FaceLandmarkerOptions(
         base_options=mp_tasks.BaseOptions(model_asset_path=MODEL_PATH),
+        running_mode=vision.RunningMode.VIDEO,  # Use video mode so detect_for_video works.
         num_faces=1,                          # Detect at most 1 face per frame.
     )
 )
